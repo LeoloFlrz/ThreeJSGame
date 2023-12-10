@@ -17,7 +17,7 @@ scene.add(axesHelper);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
-const controls = new OrbitControls(camera, renderer.domElement);
+const orbitControls = new OrbitControls(camera, renderer.domElement);
 
 const cubeColor = new THREE.Color("Orange");
 
@@ -41,7 +41,7 @@ scene.background = new THREE.CubeTextureLoader()
   ]);
 
 camera.position.z = 2;
-controls.update();
+orbitControls.update();
 
 function animate() {
   requestAnimationFrame(animate);
@@ -150,11 +150,21 @@ document.addEventListener(
 //   scene.add(gltf.scene)
 // })
 
-//Rayo Model
+// Rayo Model
 const loader = new GLTFLoader()
 loader.load('../resources/rayo/lightning_mcqueen/scene.gltf', (gltf) => {
+  const model = gltf.scene
+  model.scale.set(0.5, 0.5, 0.5)
   gltf.scene.traverse(c => {
     c.castShadow = true
   })
-  scene.add(gltf.scene)
+  scene.add(model)
 })
+
+
+const vehicleGeometry = new THREE.ConeBufferGeometry(0.1, 0.5, 8)
+vehicleGeometry.rotateX(Math.PI * 0.5)
+const vehicleMaterial = new THREE.MeshNormalMaterial()
+const vehicleMesh = new THREE.Mesh(vehicleGeometry, vehicleMaterial)
+vehicleMesh.matrixAutoUpdate = false
+scene.add(vehicleMesh)
