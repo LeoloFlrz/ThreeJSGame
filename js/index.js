@@ -20,11 +20,20 @@ const cubeColor = new THREE.Color("Orange")
 // scene.add( cube );
 
 const sphereTexture = new THREE.TextureLoader().load('textures/earth1.jpg')
+const moonTexture = new THREE.TextureLoader().load('textures/moon.jpg')
 
 const geometry = new THREE.SphereGeometry( 1, 40, 20 ); 
 const material = new THREE.MeshBasicMaterial( { map: sphereTexture } ); 
 const sphere = new THREE.Mesh( geometry, material ); 
 scene.add( sphere );
+
+const moonGeometry = new THREE.SphereGeometry( 0.2, 40, 20 ); 
+const moonMaterial = new THREE.MeshBasicMaterial( { map: moonTexture } ); 
+const moon = new THREE.Mesh( moonGeometry, moonMaterial ); 
+scene.add( moon );
+
+moon.position.x = 3
+moon.position.y = 1
 
 scene.background = new THREE.CubeTextureLoader()
 	.setPath( 'textures/' )
