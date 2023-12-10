@@ -141,10 +141,20 @@ document.addEventListener(
 
 //Model With Animations
 
-new GLTFLoader().load("models/Soldier.glb", function (gltf) {
-  const model = gltf.scene;
-  model.traverse(function (any) {
-    if (Object.isMesh) Object.castShadow = true;
-  });
-  scene.add(model);
-});
+// TREX Model
+// const loader = new GLTFLoader()
+// loader.load('../resources/TRex/scene.gltf', (gltf) => {
+//   gltf.scene.traverse(c => {
+//     c.castShadow = true
+//   })
+//   scene.add(gltf.scene)
+// })
+
+//Rayo Model
+const loader = new GLTFLoader()
+loader.load('../resources/rayo/lightning_mcqueen/scene.gltf', (gltf) => {
+  gltf.scene.traverse(c => {
+    c.castShadow = true
+  })
+  scene.add(gltf.scene)
+})
