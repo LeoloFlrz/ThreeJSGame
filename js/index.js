@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { KeyDisplay } from './utils.js';
+import { KeyDisplay } from "./utils.js";
 import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+import { GLTFLoader } from "../node_modules/three/examples/jsm/loaders/GLTFLoader.js";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -92,59 +92,59 @@ function generateFloor() {
     map.wrapS = map.wrapT = THREE.RepeatWrapping;
     map.repeat.x = map.repeat.y = 10;
   }
-
-  function light() {
-    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-    dirLight.position.set(-60, 100, -10);
-    dirLight.castShadow = true;
-    dirLight.shadow.camera.top = 50;
-    dirLight.shadow.camera.bottom = -50;
-    dirLight.shadow.camera.left = -50;
-    dirLight.shadow.camera.right = 50;
-    dirLight.shadow.camera.near = 0.1;
-    dirLight.shadow.camera.far = 200;
-    dirLight.shadow.mapSize.width = 4096;
-    dirLight.shadow.mapSize.height = 4096;
-    scene.add(dirLight);
-    // scene.add( new THREE.CameraHelper(dirLight.shadow.camera))
-  }
-  light();
-
-  const keysPressed = {};
-  const keyDisplayQueue = new KeyDisplay();
-
-  document.addEventListener(
-    "keydown",
-    (event) => {
-      keyDisplayQueue.down(event.key);
-
-      if (event.shiftKey && characterControls) {
-        characterControls.switchRunToggle();
-      } else {
-        keysPressed[event.key.toLowerCase()] = true;
-      }
-    },
-    false
-  );
-
-  document.addEventListener(
-    "keyup",
-    (event) => {
-      keyDisplayQueue.up(event.key);
-      keysPressed[event.key.toLowerCase()] = false;
-    },
-    false
-  );
-
-  //Model With Animations
-
-  new GLTFLoader().load('models/Soldier.glb', function (gltf) {
-	const model = gltf.scene;
-	model.traverse(function(any) {
-		if(Object.isMesh) Object.castShadow = true;
-	})
-	scene.add(model)
-  })
 }
+
+function light() {
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+  dirLight.position.set(-60, 100, -10);
+  dirLight.castShadow = true;
+  dirLight.shadow.camera.top = 50;
+  dirLight.shadow.camera.bottom = -50;
+  dirLight.shadow.camera.left = -50;
+  dirLight.shadow.camera.right = 50;
+  dirLight.shadow.camera.near = 0.1;
+  dirLight.shadow.camera.far = 200;
+  dirLight.shadow.mapSize.width = 4096;
+  dirLight.shadow.mapSize.height = 4096;
+  scene.add(dirLight);
+  // scene.add( new THREE.CameraHelper(dirLight.shadow.camera))
+}
+light();
+
+const keysPressed = {};
+const keyDisplayQueue = new KeyDisplay();
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+    keyDisplayQueue.down(event.key);
+
+    if (event.shiftKey && characterControls) {
+      characterControls.switchRunToggle();
+    } else {
+      keysPressed[event.key.toLowerCase()] = true;
+    }
+  },
+  false
+);
+
+document.addEventListener(
+  "keyup",
+  (event) => {
+    keyDisplayQueue.up(event.key);
+    keysPressed[event.key.toLowerCase()] = false;
+  },
+  false
+);
+
+//Model With Animations
+
+new GLTFLoader().load("models/Soldier.glb", function (gltf) {
+  const model = gltf.scene;
+  model.traverse(function (any) {
+    if (Object.isMesh) Object.castShadow = true;
+  });
+  scene.add(model);
+});
