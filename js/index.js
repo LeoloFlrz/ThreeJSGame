@@ -142,13 +142,14 @@ document.addEventListener(
 //Model With Animations
 
 // TREX Model
-// const loader = new GLTFLoader()
-// loader.load('../resources/TRex/scene.gltf', (gltf) => {
-//   gltf.scene.traverse(c => {
-//     c.castShadow = true
-//   })
-//   scene.add(gltf.scene)
-// })
+const dinoLoader = new GLTFLoader()
+dinoLoader.load('../resources/TRex/scene.gltf', (gltf) => {
+  const dinoModel = gltf.scene
+  gltf.scene.traverse(c => {
+    c.castShadow = true
+  })
+  scene.add(dinoModel)
+})
 
 // Rayo Model
 const loader = new GLTFLoader()
