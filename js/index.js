@@ -145,6 +145,7 @@ document.addEventListener(
 const dinoLoader = new GLTFLoader()
 dinoLoader.load('../resources/TRex/scene.gltf', (gltf) => {
   const dinoModel = gltf.scene
+  dinoModel.scale.set(0.2, 0.2, 0.2)
   gltf.scene.traverse(c => {
     c.castShadow = true
   })
