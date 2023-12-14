@@ -4,7 +4,7 @@ import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitCo
 // Crear escena, cámara y renderizador
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 3;
+camera.position.z = 8;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -54,17 +54,25 @@ const cloudTexture = new THREE.TextureLoader().load(
 );
 
 // Geometría y materiales
-const earthGeometry = new THREE.SphereGeometry(1, 40, 40);
+const earthGeometry = new THREE.SphereGeometry(3, 40, 40);
 const earthMaterial = new THREE.MeshPhongMaterial({ map: earthTexture });
 
-const cloudGeometry = new THREE.SphereGeometry(1.01, 40, 40);
+const cloudGeometry = new THREE.SphereGeometry(3.10, 40, 40);
 const cloudMaterial = new THREE.MeshPhongMaterial({ map: cloudTexture, transparent: true });
+
+const moonGeometry = new THREE.SphereGeometry(0.6, 20, 20);
+const moonMaterial = new THREE.MeshPhongMaterial( { color: 0x000010 } )
 
 // Objetos
 const earth = new THREE.Mesh(earthGeometry, earthMaterial);
 const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
+const moon = new THREE.Mesh(moonGeometry, moonMaterial);
 
-scene.add(earth, clouds);
+// Object positions
+moon.position.z = 5
+moon.position.y = 2
+
+scene.add(earth, clouds, moon);
 
 scene.background = new THREE.CubeTextureLoader()
 	.setPath( 'textures/' )
