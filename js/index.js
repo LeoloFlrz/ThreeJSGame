@@ -24,12 +24,16 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
 directionalLight.position.set(1, 1, 1).normalize();
 scene.add(directionalLight);
 
+// Axis helper
+const axesHelper = new THREE.AxesHelper( 5 );
+scene.add( axesHelper );
+
 // Texturas
-const worldTexture = new THREE.TextureLoader().load(
+const earthTexture = new THREE.TextureLoader().load(
   'textures/toonEarth.jpg',
   (texture) => {
-    worldMaterial.map = texture;
-    worldMaterial.needsUpdate = true;
+    earthMaterial.map = texture;
+    earthMaterial.needsUpdate = true;
   },
   undefined,
   (error) => {
@@ -50,17 +54,17 @@ const cloudTexture = new THREE.TextureLoader().load(
 );
 
 // Geometría y materiales
-const worldGeometry = new THREE.SphereGeometry(1, 40, 40);
-const worldMaterial = new THREE.MeshPhongMaterial({ map: worldTexture });
+const earthGeometry = new THREE.SphereGeometry(1, 40, 40);
+const earthMaterial = new THREE.MeshPhongMaterial({ map: earthTexture });
 
 const cloudGeometry = new THREE.SphereGeometry(1.01, 40, 40);
 const cloudMaterial = new THREE.MeshPhongMaterial({ map: cloudTexture, transparent: true });
 
 // Objetos
-const world = new THREE.Mesh(worldGeometry, worldMaterial);
+const earth = new THREE.Mesh(earthGeometry, earthMaterial);
 const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
 
-scene.add(world, clouds);
+scene.add(earth, clouds);
 
 scene.background = new THREE.CubeTextureLoader()
 	.setPath( 'textures/' )
@@ -77,7 +81,7 @@ scene.background = new THREE.CubeTextureLoader()
 function animate() {
   requestAnimationFrame(animate);
   controls.update(); // Actualizar controles de órbita
-  world.rotation.y += 0.002;
+  earth.rotation.y += 0.002;
   clouds.rotation.y += 0.005;
   renderer.render(scene, camera);
 }
