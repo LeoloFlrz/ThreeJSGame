@@ -73,14 +73,16 @@ const cloudGeometry = new THREE.SphereGeometry(3.10, 40, 40);
 const cloudMaterial = new THREE.MeshPhongMaterial({ map: cloudTexture, transparent: true });
 
 const moonGeometry = new THREE.SphereGeometry(0.6, 20, 20);
-const moonMaterial = new THREE.MeshPhongMaterial( { map: moonTexture } )
+const moonMaterial = new THREE.MeshPhongMaterial( { map: moonTexture } );
 
-
+const sunGeometry = new THREE.SphereGeometry(20, 50, 50);
+const sunMaterial = new THREE.MeshPhongMaterial( { color: "orange" } );
 
 // Objetos
 const earth = new THREE.Mesh(earthGeometry, earthMaterial);
 const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
 const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 
 // Object positions
 moon.position.z = 35
@@ -89,7 +91,7 @@ earth.position.z = 30;
 clouds.position.z = 30;
 
 
-scene.add(earth, clouds, moon);
+scene.add(earth, clouds, moon, sun);
 
 scene.background = new THREE.CubeTextureLoader()
 	.setPath( 'textures/' )
