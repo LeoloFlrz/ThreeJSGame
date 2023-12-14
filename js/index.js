@@ -175,14 +175,19 @@ function sync(entity, renderComponent) {
   renderComponent.matrix.copy(entity.worldMatrix);
 }
 
+// const path = new YUKA.Path();
+// path.add(new YUKA.Vector3(-8, 0, 4));
+// path.add(new YUKA.Vector3(-12, 0, 0));
+// path.add(new YUKA.Vector3(-6, 0, -12));
+// path.add(new YUKA.Vector3(0, 0, 0));
+// path.add(new YUKA.Vector3(8, 0, -8));
+// path.add(new YUKA.Vector3(10, 0, 0));
+// path.add(new YUKA.Vector3(4, 0, 4));
+// path.add(new YUKA.Vector3(0, 0, 6));
+
 const path = new YUKA.Path();
-path.add(new YUKA.Vector3(-6, 0, 4));
-path.add(new YUKA.Vector3(-12, 0, 0));
-path.add(new YUKA.Vector3(-6, 0, -12));
 path.add(new YUKA.Vector3(0, 0, 0));
-path.add(new YUKA.Vector3(8, 0, -8));
-path.add(new YUKA.Vector3(10, 0, 0));
-path.add(new YUKA.Vector3(4, 0, 4));
+path.addArc(180, 0.1); // radio del arco
 path.add(new YUKA.Vector3(0, 0, 6));
 
 path.loop = true;
