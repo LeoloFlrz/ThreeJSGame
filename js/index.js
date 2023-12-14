@@ -53,6 +53,18 @@ const cloudTexture = new THREE.TextureLoader().load(
   }
 );
 
+const moonTexture = new THREE.TextureLoader().load(
+  'textures/moonTexture.png',
+  (texture) => {
+    moonMaterial.map = texture;
+    moonMaterial.needsUpdate = true;
+  },
+  undefined,
+  (error) => {
+    console.error('Error al cargar la textura de las nubes', error);
+  }
+);
+
 // Geometría y materiales
 const earthGeometry = new THREE.SphereGeometry(3, 40, 40);
 const earthMaterial = new THREE.MeshPhongMaterial({ map: earthTexture });
@@ -61,7 +73,9 @@ const cloudGeometry = new THREE.SphereGeometry(3.10, 40, 40);
 const cloudMaterial = new THREE.MeshPhongMaterial({ map: cloudTexture, transparent: true });
 
 const moonGeometry = new THREE.SphereGeometry(0.6, 20, 20);
-const moonMaterial = new THREE.MeshPhongMaterial( { color: 0x000010 } )
+const moonMaterial = new THREE.MeshPhongMaterial( { map: moonTexture } )
+
+
 
 // Objetos
 const earth = new THREE.Mesh(earthGeometry, earthMaterial);
@@ -69,8 +83,11 @@ const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
 const moon = new THREE.Mesh(moonGeometry, moonMaterial);
 
 // Object positions
-moon.position.z = 5
+moon.position.z = 35
 moon.position.y = 2
+earth.position.z = 30;
+clouds.position.z = 30;
+
 
 scene.add(earth, clouds, moon);
 
