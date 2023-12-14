@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@types/three": "^0.155.0",
-    "three": "^0.154.0"
+    "three": "^0.154.0",
+    "yuka": "^0.7.8"
   },
   "devDependencies": {
     "vite": "^4.4.9"

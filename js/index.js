@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import * as YUKA from "yuka";
 import { KeyDisplay } from "./utils.js";
 import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "../node_modules/three/examples/jsm/loaders/GLTFLoader.js";
@@ -43,13 +44,13 @@ scene.background = new THREE.CubeTextureLoader()
 camera.position.z = 2;
 orbitControls.update();
 
-function animate() {
-  requestAnimationFrame(animate);
+// function animate() {
+//   requestAnimationFrame(animate);
 
-  renderer.render(scene, camera);
-}
+//   renderer.render(scene, camera);
+// }
 
-animate();
+// animate();
 
 function generateFloor() {
   // TEXTURES
@@ -142,31 +143,86 @@ document.addEventListener(
 //Model With Animations
 
 // TREX Model
-const dinoLoader = new GLTFLoader()
-dinoLoader.load('../resources/TRex/scene.gltf', (gltf) => {
-  const dinoModel = gltf.scene
-  dinoModel.scale.set(0.2, 0.2, 0.2)
-  gltf.scene.traverse(c => {
-    c.castShadow = true
-  })
-  scene.add(dinoModel)
-})
+// const dinoLoader = new GLTFLoader()
+// dinoLoader.load('../resources/TRex/scene.gltf', (gltf) => {
+//   const dinoModel = gltf.scene
+//   dinoModel.scale.set(0.2, 0.2, 0.2)
+//   gltf.scene.traverse(c => {
+//     c.castShadow = true
+//   })
+//   scene.add(dinoModel)
+// })
 
 // Rayo Model
-const loader = new GLTFLoader()
-loader.load('../resources/rayo/lightning_mcqueen/scene.gltf', (gltf) => {
-  const model = gltf.scene
-  model.scale.set(0.5, 0.5, 0.5)
-  gltf.scene.traverse(c => {
-    c.castShadow = true
-  })
-  scene.add(model)
-})
+const loader = new GLTFLoader();
+loader.load("../resources/rayo/lightning_mcqueen/scene.gltf", (gltf) => {
+  const model = gltf.scene;
+  model.scale.set(0.2, 0.2, 0.2);
+  gltf.scene.traverse((c) => {
+    c.castShadow = true;
+  });
+  scene.add(model);
+  model.matrixAutoUpdate = false;
+  vehicle.scale = new YUKA.Vector3(0.5, 0.5, 0.5);
+  vehicle.setRenderComponent(model, sync);
+});
 
 
-const vehicleGeometry = new THREE.ConeBufferGeometry(0.1, 0.5, 8)
-vehicleGeometry.rotateX(Math.PI * 0.5)
-const vehicleMaterial = new THREE.MeshNormalMaterial()
-const vehicleMesh = new THREE.Mesh(vehicleGeometry, vehicleMaterial)
-vehicleMesh.matrixAutoUpdate = false
-scene.add(vehicleMesh)
+
+const vehicle = new YUKA.Vehicle();
+
+function sync(entity, renderComponent) {
+  renderComponent.matrix.copy(entity.worldMatrix);
+}
+
+const path = new YUKA.Path();
+path.add(new YUKA.Vector3(-6, 0, 4));
+path.add(new YUKA.Vector3(-12, 0, 0));
+path.add(new YUKA.Vector3(-6, 0, -12));
+path.add(new YUKA.Vector3(0, 0, 0));
+path.add(new YUKA.Vector3(8, 0, -8));
+path.add(new YUKA.Vector3(10, 0, 0));
+path.add(new YUKA.Vector3(4, 0, 4));
+path.add(new YUKA.Vector3(0, 0, 6));
+
+path.loop = true;
+
+vehicle.position.copy(path.current());
+
+vehicle.maxSpeed = 10;
+
+const followPathBehavior = new YUKA.FollowPathBehavior(path, 3);
+vehicle.steering.add(followPathBehavior);
+
+const onPathBehavior = new YUKA.OnPathBehavior(path);
+//onPathBehavior.radius = 2;
+vehicle.steering.add(onPathBehavior);
+
+const entityManager = new YUKA.EntityManager();
+entityManager.add(vehicle);
+
+const position = [];
+for (let i = 0; i < path._waypoints.length; i++) {
+  const waypoint = path._waypoints[i];
+  position.push(waypoint.x, waypoint.y, waypoint.z);
+}
+
+const lineGeometry = new THREE.BufferGeometry();
+lineGeometry.setAttribute(
+  "position",
+  new THREE.Float32BufferAttribute(position, 3)
+);
+
+const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+const lines = new THREE.LineLoop(lineGeometry, lineMaterial);
+scene.add(lines);
+
+const time = new YUKA.Time();
+
+function animate() {
+  const delta = time.update().getDelta();
+  entityManager.update(delta);
+  renderer.render(scene, camera);
+}
+
+renderer.setAnimationLoop(animate);
