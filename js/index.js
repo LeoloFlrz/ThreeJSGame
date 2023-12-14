@@ -91,6 +91,7 @@ function animate() {
   controls.update(); // Actualizar controles de órbita
   earth.rotation.y += 0.002;
   clouds.rotation.y += 0.005;
+  moon.rotation.y += 0.005;
   renderer.render(scene, camera);
 }
 
