@@ -185,10 +185,17 @@ function sync(entity, renderComponent) {
 // path.add(new YUKA.Vector3(4, 0, 4));
 // path.add(new YUKA.Vector3(0, 0, 6));
 
+const radius = 10;
+const segments = 20; // Número de segmentos para el camino circular
+const angleIncrement = (2 * Math.PI) / segments;
+
 const path = new YUKA.Path();
-path.add(new YUKA.Vector3(0, 0, 0));
-path.addArc(180, 0.1); // radio del arco
-path.add(new YUKA.Vector3(0, 0, 6));
+for (let i = 0; i < segments; i++) {
+    const angle = i * angleIncrement;
+    const x = radius * Math.cos(angle);
+    const z = radius * Math.sin(angle);
+    path.add(new YUKA.Vector3(x, 0, z));
+}
 
 path.loop = true;
 
