@@ -66,6 +66,19 @@ const moonTexture = new THREE.TextureLoader().load(
   }
 );
 
+// Movement path
+const radius = 30;
+const segments = 2000; // Número de segmentos para el camino circular
+const angleIncrement = (2 * Math.PI) / segments;
+
+const path = new YUKA.Path();
+for (let i = 0; i < segments; i++) {
+    const angle = i * angleIncrement;
+    const x = radius * Math.cos(angle);
+    const z = radius * Math.sin(angle);
+    path.add(new YUKA.Vector3(x, 0, z));
+}
+
 // Geometría y materiales
 const earthGeometry = new THREE.SphereGeometry(3, 40, 40);
 const earthMaterial = new THREE.MeshPhongMaterial({ map: earthTexture });
@@ -87,6 +100,9 @@ const moon = new THREE.Mesh(moonGeometry, moonMaterial);
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 
 // Object positions
+earth.rotation.y = 5;
+
+
 moon.position.z = 35
 moon.position.y = 2
 // earth.position.z = 30;
@@ -100,35 +116,33 @@ const earthMove = new YUKA.Vehicle();
 earth.matrixAutoUpdate = false;
 // earthMove.scale = new YUKA.Vector3(0.5, 0.5, 0.5);
 earthMove.setRenderComponent(earth, sync);
+earthMove.position.copy(path.current());
+
 
 function sync(entity, renderComponent) {
   renderComponent.matrix.copy(entity.worldMatrix);
 }
 
-// Movement path
-const radius = 30;
-const segments = 50; // Número de segmentos para el camino circular
-const angleIncrement = (2 * Math.PI) / segments;
 
-const path = new YUKA.Path();
-for (let i = 0; i < segments; i++) {
-    const angle = i * angleIncrement;
-    const x = radius * Math.cos(angle);
-    const z = radius * Math.sin(angle);
-    path.add(new YUKA.Vector3(x, 0, z));
-}
+
+// earthMove.position.copy(path.current());
 
 path.loop = true;
 
 earthMove.position.copy(path.current());
 
-earthMove.maxSpeed = 10;
+earthMove.maxSpeed = 0.1;
+
+// const arriveBehavior = new YUKA.ArriveBehavior(path, 2);
+// arriveBehavior.factor = 0.2; // Ajusta según sea necesario
+// earthMove.steering.add(arriveBehavior);
 
 const followPathBehavior = new YUKA.FollowPathBehavior(path, 3);
+followPathBehavior.timeToTarget = 0.1;
 earthMove.steering.add(followPathBehavior);
 
 const onPathBehavior = new YUKA.OnPathBehavior(path);
-//onPathBehavior.radius = 2;
+onPathBehavior.radius = 2;
 earthMove.steering.add(onPathBehavior);
 
 const entityManager = new YUKA.EntityManager();
@@ -152,8 +166,6 @@ scene.add(lines);
 
 const time = new YUKA.Time();
 
-
-
 scene.background = new THREE.CubeTextureLoader()
 	.setPath( 'textures/' )
 	.load( [
@@ -171,16 +183,23 @@ function animate() {
   const delta = time.update().getDelta();
   entityManager.update(delta);
   controls.update(); // Actualizar controles de órbita
-  earth.rotation.y += 0.002;
+
+  const currentPosition = path.current();
+  earthMove.position.copy(currentPosition);
+
+  // Obtener la rotación desde YUKA earthMove
+  const rotationMatrix = new THREE.Matrix4();
+  rotationMatrix.extractRotation(earth.matrix);
+  earth.rotation.setFromRotationMatrix(rotationMatrix);
+
+  // earth.rotation.y += 0.002;
   // clouds.rotation.y += 0.005;
   moon.rotation.y += 0.005;
+
+  earthMove.position.copy(path.current());
+
   renderer.render(scene, camera);
 }
 
-renderer.setAnimationLoop(animate);
-
-
-
-
-
-
+animate()
+// renderer.setAnimationLoop(animate);
