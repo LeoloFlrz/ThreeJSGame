@@ -144,8 +144,9 @@ moon.position.y = 2
 // earth.position.z = 30;
 // clouds.position.z = 30;
 
+earth.add(moon)
 
-scene.add(earth, clouds, moon, sun);
+scene.add(earth, clouds, sun);
 
 // Planets Movement
 const earthMove = new YUKA.Vehicle();
