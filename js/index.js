@@ -139,7 +139,7 @@ const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 earth.rotation.y = 5;
 
 
-moon.position.z = 35
+moon.position.z = 5
 moon.position.y = 2
 // earth.position.z = 30;
 // clouds.position.z = 30;
