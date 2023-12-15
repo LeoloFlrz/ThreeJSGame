@@ -53,7 +53,7 @@ const cloudTexture = new THREE.TextureLoader().load(
 const worldGeometry = new THREE.SphereGeometry(1, 40, 40);
 const worldMaterial = new THREE.MeshPhongMaterial({ map: worldTexture });
 
-const cloudGeometry = new THREE.SphereGeometry(1.01, 40, 40);
+const cloudGeometry = new THREE.SphereGeometry(1.1, 40, 40);
 const cloudMaterial = new THREE.MeshPhongMaterial({ map: cloudTexture, transparent: true });
 
 // Objetos
@@ -65,12 +65,12 @@ scene.add(world, clouds);
 scene.background = new THREE.CubeTextureLoader()
 	.setPath( 'textures/' )
 	.load( [
-				'space.png',
-				'space.png',
-				'space.png',
-				'space.png',
-				'space.png',
-				'space.png'
+				'stars.jpg',
+				'stars.jpg',
+				'stars.jpg ',
+				'stars.jpg',
+				'stars.jpg',
+				'stars.jpg'
 			] );
 
 // Animación
