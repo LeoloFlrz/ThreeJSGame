@@ -169,12 +169,12 @@ const time = new YUKA.Time();
 scene.background = new THREE.CubeTextureLoader()
 	.setPath( 'textures/' )
 	.load( [
-				'space.png',
-				'space.png',
-				'space.png',
-				'space.png',
-				'space.png',
-				'space.png'
+				'starz.jpg',
+				'starz.jpg',
+                'starz.jpg',
+                'starz.jpg',
+                'starz.jpg',
+                'starz.jpg'
 			] );
 
 // Animación
