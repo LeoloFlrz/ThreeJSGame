@@ -1,5 +1,13 @@
 body {
     margin: 0;
     padding: 0;
-    background: radial-gradient(circle at center, white, rgba(113,129,191,0.5))
+    background: radial-gradient(circle at center, white, rgba(113,129,191,0.5));
+    overflow: hidden;
+}
+
+.canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
 }

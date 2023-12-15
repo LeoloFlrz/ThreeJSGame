@@ -1,14 +1,22 @@
 import * as THREE from 'three';
 import * as YUKA from "yuka";
+// import "../css/styles.css"
 import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
+
+// Canvas
+const canvas = document.querySelector("canvas")
 
 // Crear escena, cámara y renderizador
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 8;
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ 
+  antialias: true,
+  canvas: canvas
+ });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 document.body.appendChild(renderer.domElement);
 
 // Controles de órbita para la interactividad
@@ -16,6 +24,34 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.25;
 controls.rotateSpeed = 0.35;
+
+// Particles
+const particlesGeometry = new THREE.BufferGeometry;
+const particlesCount = 15000;
+
+const vertices = new Float32Array(particlesCount);
+
+for(let i = 0; i < particlesCount; i++) {
+  vertices[i] = (Math.random() - 0.5) * 100; 
+}
+
+particlesGeometry.setAttribute(
+  "position",
+  new THREE.BufferAttribute(vertices, 3)
+)
+
+const textureLoader = new THREE.TextureLoader();
+const particleTexture = textureLoader.load("../textures/star1.png")
+
+const particleMaterial = new THREE.PointsMaterial({
+  map: particleTexture,
+  size: 0.2,
+  sizeAttenuation: true,
+  transparent: true
+})
+
+const stars = new THREE.Points(particlesGeometry, particleMaterial)
+scene.add(stars);
 
 // Luces
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -166,16 +202,16 @@ scene.add(lines);
 
 const time = new YUKA.Time();
 
-scene.background = new THREE.CubeTextureLoader()
-	.setPath( 'textures/' )
-	.load( [
-				'starz.jpg',
-				'starz.jpg',
-                'starz.jpg',
-                'starz.jpg',
-                'starz.jpg',
-                'starz.jpg'
-			] );
+// scene.background = new THREE.CubeTextureLoader()
+// 	.setPath( 'textures/' )
+// 	.load( [
+// 				'starz.jpg',
+// 				'starz.jpg',
+//                 'starz.jpg',
+//                 'starz.jpg',
+//                 'starz.jpg',
+//                 'starz.jpg'
+// 			] );
 
 // Animación
 function animate() {
@@ -195,6 +231,8 @@ function animate() {
   // earth.rotation.y += 0.002;
   // clouds.rotation.y += 0.005;
   moon.rotation.y += 0.005;
+
+  stars.rotation.y += -0.0001;
 
   earthMove.position.copy(path.current());
 

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@types/three": "^0.155.0",
+    "particles.js": "^2.0.0",
     "three": "^0.154.0",
     "yuka": "^0.7.8"
   },
