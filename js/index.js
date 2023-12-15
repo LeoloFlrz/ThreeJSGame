@@ -136,7 +136,6 @@ const moon = new THREE.Mesh(moonGeometry, moonMaterial);
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 
 // Object positions
-earth.rotation.y = 5;
 
 
 moon.position.z = 5
@@ -144,9 +143,9 @@ moon.position.y = 2
 // earth.position.z = 30;
 // clouds.position.z = 30;
 
-earth.add(moon)
+earth.add(moon, clouds)
 
-scene.add(earth, clouds, sun);
+scene.add(earth, sun);
 
 // Planets Movement
 const earthMove = new YUKA.Vehicle();
@@ -229,9 +228,9 @@ function animate() {
   rotationMatrix.extractRotation(earth.matrix);
   earth.rotation.setFromRotationMatrix(rotationMatrix);
 
-  // earth.rotation.y += 0.002;
-  // clouds.rotation.y += 0.005;
-  moon.rotation.y += 0.005;
+  earth.rotation.y += 0.002;
+  clouds.rotation.y += 0.005;
+  moon.rotation.y -= 0.005;
 
   stars.rotation.y += -0.0001;
 
